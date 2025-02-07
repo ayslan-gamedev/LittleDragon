@@ -21,7 +21,7 @@ public class Grid
     /// <summary>
     /// The 2D array of chunks that make up the grid.
     /// </summary>
-    public readonly Chunk[,] Chunks;
+    public readonly Room[,] Chunks;
 
     /// <summary>
     /// Initializes a new grid with the specified dimensions, filling it with default chunks.
@@ -30,7 +30,7 @@ public class Grid
     /// <param name="height">The height of the grid.</param>
     internal Grid(int width, int height)
     {
-        Chunks = new Chunk[height, width];
+        Chunks = new Room[height, width];
         Height = height;
         Width = width;
 
@@ -39,7 +39,7 @@ public class Grid
         {
             for (var y = 0; y < height; y++)
             {
-                Chunks[y, x] = new Chunk(new Vector2I(y, x), 0);
+                Chunks[y, x] = new Room(new Vector2I(y, x), 0);
             }
         }
     }
@@ -55,16 +55,16 @@ public class Grid
     /// <summary>
     /// Allocates a chunk into the grid at its specified position.
     /// </summary>
-    /// <param name="chunk">The chunk to allocate.</param>
-    internal void Alloc(Chunk chunk)
+    /// <param name="room">The chunk to allocate.</param>
+    internal void Alloc(Room room)
     {
-        if (OutOfBounds(chunk.Position))
+        if (OutOfBounds(room.Position))
         {
-            GD.PushError($"{chunk.Position} is out of bounds");
+            GD.PushError($"{room.Position} is out of bounds");
             return;
         }
 
-        Chunks[chunk.Position.Y, chunk.Position.X] = chunk;
+        Chunks[room.Position.Y, room.Position.X] = room;
     }
 
     /// <summary>
@@ -72,7 +72,7 @@ public class Grid
     /// </summary>
     /// <param name="position">The position of the chunk.</param>
     /// <returns>The chunk at the specified position.</returns>
-    public Chunk GetChunk(Vector2I position) => Chunks[position.Y, position.X];
+    public Room GetChunk(Vector2I position) => Chunks[position.Y, position.X];
 
     /// <summary>
     /// Retrieves a chunk at the specified grid coordinates.
@@ -80,7 +80,7 @@ public class Grid
     /// <param name="x">The x-coordinate of the chunk.</param>
     /// <param name="y">The y-coordinate of the chunk.</param>
     /// <returns>The chunk at the specified coordinates.</returns>
-    public Chunk GetChunk(int x, int y) => Chunks[y, x];
+    public Room GetChunk(int x, int y) => Chunks[y, x];
 
     /// <summary>
     /// Returns a string representation of the grid, displaying chunk names and binary values.
@@ -95,7 +95,7 @@ public class Grid
             gridString += "[";
             for (var x = 0; x < Width; x++)
             {
-                var separate = GetChunk(x, y).SpecialChunk ? "_" : "";
+                var separate = GetChunk(x, y).SpecialRoom ? "_" : "";
                 var end = x == Width - 1 ? "" : ", ";
                 gridString += $"{GetChunk(x, y).Name}{separate}{GetChunk(x, y).Binary}{end}";
             }

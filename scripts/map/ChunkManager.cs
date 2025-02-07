@@ -11,7 +11,7 @@ namespace LittleDragon.scripts.map;
 /// <summary>
 /// Handles the loading and instantiation of room chunks in the grid.
 /// </summary>
-public static class ChunkLoader
+public static class ChunkManager
 {
     private const string RoomsPath = "res://assets/resources/rooms/";
 
@@ -20,10 +20,10 @@ public static class ChunkLoader
     /// </summary>
     /// <param name="root">The root node to which instantiated rooms will be added.</param>
     /// <param name="grid">The grid structure containing chunk data.</param>
-    /// <returns>A list of instantiated <see cref="Room"/> objects.</returns>
-    public static List<Room> InstantiateGrid(Node2D root, Grid grid)
+    /// <returns>A list of instantiated <see cref="Chunk"/> objects.</returns>
+    public static List<Chunk> InstantiateGrid(Node2D root, Grid grid)
     {
-        var rooms = new Room[grid.Chunks.GetLength(1), grid.Chunks.GetLength(0)];
+        var rooms = new Chunk[grid.Chunks.GetLength(1), grid.Chunks.GetLength(0)];
 
         for (var x = 0; x < grid.Width; x++)
         {
@@ -42,24 +42,24 @@ public static class ChunkLoader
         }
 
         // Filter out null or empty rooms (rooms represented as "0000")
-        return rooms.Cast<Room>().Where(room => room != null && room.ToString() != "0000").ToList();
+        return rooms.Cast<Chunk>().Where(room => room != null && room.ToString() != "0000").ToList();
     }
 
     /// <summary>
     /// Instantiates a room based on the provided chunk and attaches it to the given root node.
     /// </summary>
     /// <param name="root">The root <see cref="Node2D"/> where the room will be added.</param>
-    /// <param name="chunk">The <see cref="Chunk"/> containing information about the room to be instantiated.</param>
-    /// <returns>The instantiated <see cref="Room"/> if successful; otherwise, null.</returns>
-    private static Room InstantiateRoom(Node2D root, Chunk chunk)
+    /// <param name="room">The <see cref="Room"/> containing information about the room to be instantiated.</param>
+    /// <returns>The instantiated <see cref="Chunk"/> if successful; otherwise, null.</returns>
+    private static Chunk InstantiateRoom(Node2D root, Room room)
     {
         // If the chunk's name is "0", return null (indicating no room should be instantiated).
-        if (chunk.Name == "0") return null;
+        if (room.Name == "0") return null;
 
         // Construct the path where the room scene files are stored.
-        var path = chunk.SpecialChunk
-            ? $"{RoomsPath}{chunk.Name}/{chunk.Binary}/"
-            : $"{RoomsPath}{chunk.Name}_{chunk.Binary}/";
+        var path = room.SpecialRoom
+            ? $"{RoomsPath}{room.Name}/{room.Binary}/"
+            : $"{RoomsPath}{room.Name}_{room.Binary}/";
 
         // Attempt to open the directory containing room scenes.
         var dir = DirAccess.Open(path);
@@ -89,6 +89,30 @@ public static class ChunkLoader
         root.AddChild(scene);
 
         // Return the Room node within the instantiated scene.
-        return scene.GetNode<Room>("Room");
+        return scene.GetNode<Chunk>("Room");
+    }
+    
+    public static void SetCurrentChunk(Chunk chunk, List<Chunk> rooms)
+    {
+        var currentRoom = new Chunk();
+
+        foreach (var mRoom in rooms)
+        {
+            if (mRoom != currentRoom)
+            {
+                mRoom.GetOwner<Node2D>().Visible = false;
+            }
+            else
+            {
+                currentRoom = mRoom;
+                currentRoom.GetOwner<Node2D>().Visible = true;
+            }
+        }
+        
+        foreach (var neighbor in currentRoom.NeighborRooms)
+        {
+            if (neighbor != null) 
+                neighbor.GetOwner<Node2D>().Visible = true;
+        }            
     }
 }

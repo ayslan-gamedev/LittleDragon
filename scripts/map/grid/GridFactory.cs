@@ -8,17 +8,17 @@ namespace LittleDragon.scripts.map.grid;
 /// <summary>
 /// Provides utility methods for creating grids of chunks.
 /// </summary>
-public class GridFactory
+public abstract class GridFactory
 {
     /// <summary>
     /// Creates a grid with random chunk placement based on the provided chunk builders and seed.
     /// </summary>
     /// <param name="width">The width of the grid in chunks.</param>
     /// <param name="height">The height of the grid in chunks.</param>
-    /// <param name="dots">An array of <see cref="ChunkBuilder"/> to define chunk placement.</param>
+    /// <param name="dots">An array of <see cref="RoomBuilder"/> to define chunk placement.</param>
     /// <param name="seed">The seed for random number generation. Defaults to 0 for random seeding.</param>
     /// <returns>A tuple containing the created <see cref="Grid"/> and a list of <see cref="Vector2I"/> positions of the placed chunks.</returns>
-    public static (Grid grid, List<Vector2I> dots) CreateGrid(int width, int height, ChunkBuilder[] dots, int seed = 0)
+    public static (Grid grid, List<Vector2I> dots) CreateGrid(int width, int height, RoomBuilder[] dots, int seed = 0)
     {
         var newGrid = new Grid(width, height);
         var rng = new Random(seed == 0 ? new Random().Next(0, 10000) : seed);
@@ -31,9 +31,9 @@ public class GridFactory
             {
                 position.X = rng.Next(builder.Min.X, builder.Max.X);
                 position.Y = rng.Next(builder.Min.Y, builder.Max.Y);
-            } while (newGrid.GetChunk(position).SpecialChunk);
+            } while (newGrid.GetChunk(position).SpecialRoom);
             
-            newGrid.Alloc(new Chunk(position, 0, builder.Name));
+            newGrid.Alloc(new Room(position, 0, builder.Name));
             newDots.Add(position);
         }
         

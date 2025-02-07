@@ -6,4 +6,7 @@
     <EnableDynamicLoading>true</EnableDynamicLoading>
     <RootNamespace>LittleDragon</RootNamespace>
   </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="scripts\player\" />
+  </ItemGroup>
 </Project>

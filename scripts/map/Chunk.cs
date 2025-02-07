@@ -5,7 +5,7 @@ namespace LittleDragon.scripts.map;
 /// <summary>
 /// Represents a room in the game, which can have up to four neighboring rooms.
 /// </summary>
-public partial class Room : Node
+public partial class Chunk : Node
 {
     /// <summary>
     /// References to the doors or pathways leading to adjacent rooms.
@@ -23,16 +23,16 @@ public partial class Room : Node
     /// <summary>
     /// Stores references to neighboring Room instances.
     /// </summary>
-    private Room[] _neighborRooms = new Room[4];
-
+    public Chunk[] NeighborRooms = new Chunk[4];
+    
     /// <summary>
     /// Assigns a neighboring room in a specific direction.
     /// </summary>
     /// <param name="io">Direction index (0: Left, 1: Up, 2: Right, 3: Down).</param>
-    /// <param name="room">The room to set as a neighbor.</param>
-    public void SetNeighbor(int io, Room room)
+    /// <param name="chunk">The room to set as a neighbor.</param>
+    public void SetNeighbor(int io, Chunk chunk)
     {
-        _neighborRooms[io] = room;
+        NeighborRooms[io] = chunk;
     }
 
     /// <summary>
