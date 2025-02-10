@@ -1,7 +1,7 @@
-[gd_scene load_steps=5 format=4 uid="uid://dapca8jfp58j"]
+[gd_scene load_steps=6 format=4 uid="uid://dapca8jfp58j"]
 
 [ext_resource type="Texture2D" uid="uid://ptw0cv7obed" path="res://assets/sprites/bricks.png" id="1_3nmgj"]
-[ext_resource type="Script" path="res://scripts/map/Room.cs" id="1_athab"]
+[ext_resource type="Script" path="res://scripts/map/Chunk.cs" id="2_0pld1"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_d8pbs"]
 texture = ExtResource("1_3nmgj")
@@ -325,6 +325,9 @@ terrain_set_0/terrain_0/name = "BRICKS"
 terrain_set_0/terrain_0/color = Color(0.161982, 0.429186, 0.45279, 1)
 sources/0 = SubResource("TileSetAtlasSource_d8pbs")
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dm5ba"]
+size = Vector2(224, 352)
+
 [node name="Node2D" type="Node2D"]
 
 [node name="TileMapLayer" type="TileMapLayer" parent="."]
@@ -332,13 +335,22 @@ tile_map_data = PackedByteArray("AAAAAAAAAAAEAAAAAAAAAAEAAAADAAEAAAAAAAIAAAADAAE
 tile_set = SubResource("TileSet_lgafs")
 rendering_quadrant_size = 32
 
-[node name="Room" type="Node" parent="." node_paths=PackedStringArray("_up", "_down")]
-script = ExtResource("1_athab")
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(112, 176)
+shape = SubResource("RectangleShape2D_dm5ba")
+
+[node name="Room" type="Node" parent="." node_paths=PackedStringArray("_up", "_down", "_area2D")]
+script = ExtResource("2_0pld1")
 _up = NodePath("up")
 _down = NodePath("down")
+_area2D = NodePath("../Area2D")
 
 [node name="up" type="Node2D" parent="Room"]
 position = Vector2(112, 0)
 
 [node name="down" type="Node2D" parent="Room"]
 position = Vector2(112, 352)
+
+[connection signal="body_entered" from="Area2D" to="Area2D" method="_on_body_entered"]
