@@ -30,10 +30,9 @@ public partial class Test : Node2D
         GridFactory.Connect(grid,dots[0], dots[3]);
         //GridBuilder.Connect(grid,dots[new Random().Next(0, 3)], dots[4]);
 
-        GD.Print(grid.ToString());
-
-        var a = ChunkLoader.InstantiateGrid(_node2D, grid);
-        if (a.Count == 0) GD.Print("No rooms found!");
+        PrintGrid(grid);
+        
+        var a = ChunkManager.InstantiateGrid(_node2D, grid);
 
         GD.Print(a.Count);
         GD.Print("printing: ");
