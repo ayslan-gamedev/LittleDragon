@@ -62,6 +62,11 @@ public partial class Chunk : Node
         _area2D.BodyEntered += OnBodyEntered;
     }
 
+    private static void OnBodyEntered(Node2D body)
+    {
+        GD.Print("CURRENT");
+    }
+    
     /// <summary>
     /// Returns a binary string representation of the room's connections.
     /// </summary>
