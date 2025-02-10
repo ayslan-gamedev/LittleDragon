@@ -45,10 +45,21 @@ public partial class Chunk : Node
     /// </summary>
     public override void _Ready()
     {
-        if (_left != null) RoomInputs |= 0b1000;  // Left door open
-        if (_up != null) RoomInputs |= 0b0100;    // Up door open
-        if (_right != null) RoomInputs |= 0b0010; // Right door open
-        if (_down != null) RoomInputs |= 0b0001;  // Down door open
+        // get exits (case exist)
+        _left = GetNodeOrNull<Node2D>("Left");
+        _up = GetNodeOrNull<Node2D>("Up");
+        _right = GetNodeOrNull<Node2D>("Right");
+        _down = GetNodeOrNull<Node2D>("Down");
+        
+        // set binary chunk value
+        if (_left != null) RoomInputs |= 0b1000;
+        if (_up != null) RoomInputs |= 0b0100;
+        if (_right != null) RoomInputs |= 0b0010;
+        if (_down != null) RoomInputs |= 0b0001;
+        
+        // connect ObBodyEntered from Area2D
+        _area2D = Owner.GetNode<Area2D>("Area2D");
+        _area2D.BodyEntered += OnBodyEntered;
     }
 
     /// <summary>
