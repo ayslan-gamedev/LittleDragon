@@ -47,4 +47,16 @@ public partial class Test : Node2D
     {
 		
     }
+
+    private static void PrintRooms(List<Chunk> a)
+    {
+        if (a.Count == 0) GD.Print("No rooms found!");
+
+        GD.Print(a.Count);
+        GD.Print("printing: ");
+        foreach (var room in a)
+        {
+            GD.Print(room.ToString());
+        }
+    }
 }
