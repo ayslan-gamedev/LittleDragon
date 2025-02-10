@@ -40,12 +40,6 @@ public static class ChunkManager
                 if (y > 0) room.SetNeighbor(3, rooms[x, y - 1]); // Up
             }
         }
-        
-        // make all invisible
-        foreach (var room in rooms)
-        {
-            room.GetOwner<Node2D>().Visible = false;
-        }
 
         // Filter out null or empty rooms (rooms represented as "0000")
         return rooms.Cast<Chunk>().Where(room => room != null && room.ToString() != "0000").ToList();
