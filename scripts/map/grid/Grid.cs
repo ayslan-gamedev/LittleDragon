@@ -1,7 +1,6 @@
 using Godot;
-using LittleDragon.scripts.map.grid;
 
-namespace LittleDragonAlpha.scripts.map.grid;
+namespace LittleDragon.scripts.map.grid;
 
 /// <summary>
 /// Represents a 2D grid composed of chunks, used for map generation.
@@ -95,7 +94,7 @@ public class Grid
             gridString += "[";
             for (var x = 0; x < Width; x++)
             {
-                var separate = GetChunk(x, y).SpecialRoom ? "_" : "";
+                var separate = GetChunk(x, y).Name != "0" ? "_" : "";
                 var end = x == Width - 1 ? "" : ", ";
                 gridString += $"{GetChunk(x, y).Name}{separate}{GetChunk(x, y).Binary}{end}";
             }

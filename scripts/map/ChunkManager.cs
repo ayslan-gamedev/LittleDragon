@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Godot;
 using LittleDragon.scripts.map.grid;
-using LittleDragonAlpha.scripts.map.grid;
 using FileAccess = Godot.FileAccess;
 
 namespace LittleDragon.scripts.map;

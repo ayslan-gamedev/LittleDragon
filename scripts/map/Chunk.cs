@@ -10,20 +10,14 @@ public partial class Chunk : Node
     /// <summary>
     /// References to the doors or pathways leading to adjacent rooms.
     /// </summary>
-    [Export] private Node2D _left, _up, _right, _down;
-
-    /// <summary>
-    /// Properties for accessing the adjacent room nodes.
-    /// </summary>
-    private Node2D Left => _left;
-    private Node2D Up => _up;
-    private Node2D Right => _right;
-    private Node2D Down => _down;
+    private Node2D _left, _up, _right, _down;
 
     /// <summary>
     /// Stores references to neighboring Room instances.
     /// </summary>
     public Chunk[] NeighborRooms = new Chunk[4];
+
+    private Area2D _area2D;
     
     /// <summary>
     /// Assigns a neighboring room in a specific direction.
@@ -73,7 +67,7 @@ public partial class Chunk : Node
     /// <returns>A 4-bit string indicating open paths (Left-Up-Right-Down).</returns>
     public override string ToString()
     {
-        return $"{(Left != null ? "1" : "0")}{(Up != null ? "1" : "0")}" +
-               $"{(Right != null ? "1" : "0")}{(Down != null ? "1" : "0")}";
+        return $"{(_left != null ? "1" : "0")}{(_up != null ? "1" : "0")}" +
+               $"{(_right != null ? "1" : "0")}{(_down != null ? "1" : "0")}";
     }
 }

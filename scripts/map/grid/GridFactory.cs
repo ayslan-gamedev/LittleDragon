@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Godot;
-using LittleDragonAlpha.scripts.map.grid;
 
 namespace LittleDragon.scripts.map.grid;
 
@@ -59,7 +58,7 @@ public abstract class GridFactory
                 { -1, 1, 0, 0 }, // direction X
                 { 0, 0, 1, -1 }, // direction Y
                 { 0b1000, 0b0010, 0b0001, 0b0100 }, // next direction
-                { 0b0010, 0b1000, 0b0100, 0b0001 }, // last direction'
+                { 0b0010, 0b1000, 0b0100, 0b0001 }, // last direction
             };
             
             // x < 0 = 1, x > 0 = 0, y > o 2, y < 0 = 3
