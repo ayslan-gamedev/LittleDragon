@@ -40,8 +40,28 @@ public static class ChunkManager
             }
         }
 
-        // Filter out null or empty rooms (rooms represented as "0000")
-        return rooms.Cast<Chunk>().Where(room => room != null && room.ToString() != "0000").ToList();
+        for (var x = 0; x < grid.Width; x++)
+        {
+            for (var y = 0; y < grid.Height; y++)
+            {
+                var room = rooms[x, y];
+
+                if (x > 0) room.SetNeighbor(0, rooms[x - 1, y]); // Left
+                if (y > 0) room.SetNeighbor(3, rooms[x, y - 1]); // Down
+                if (x < grid.Width - 1) room.SetNeighbor(2, rooms[x + 1, y]); // Right
+                if (y < grid.Height - 1) room.SetNeighbor(1, rooms[x, y + 1]); // Up
+            }
+        }
+
+        var list = new List<Chunk>();
+        foreach (var room in rooms)
+        {
+            if(room == null) continue;
+            room.GetOwner<Node2D>().Visible = false;
+            list.Add(room);
+        }
+        
+        return list;
     }
 
     /// <summary>
