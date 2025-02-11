@@ -26,7 +26,7 @@ public partial class Chunk : Node
     /// <param name="chunk">The room to set as a neighbor.</param>
     public void SetNeighbor(int io, Chunk chunk)
     {
-        NeighborRooms[io] = chunk;
+        if(chunk != null) NeighborRooms[io] = chunk;
     }
 
     /// <summary>
