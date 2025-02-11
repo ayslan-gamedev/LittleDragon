@@ -40,10 +40,10 @@ public partial class Chunk : Node
     public override void _Ready()
     {
         // get exits (case exist)
-        _left = GetNodeOrNull<Node2D>("Left");
-        _up = GetNodeOrNull<Node2D>("Up");
-        _right = GetNodeOrNull<Node2D>("Right");
-        _down = GetNodeOrNull<Node2D>("Down");
+        _left = GetNodeOrNull<Node2D>("left");
+        _up = GetNodeOrNull<Node2D>("up");
+        _right = GetNodeOrNull<Node2D>("right");
+        _down = GetNodeOrNull<Node2D>("down");
         
         // set binary chunk value
         if (_left != null) RoomInputs |= 0b1000;

@@ -7,8 +7,14 @@
 metadata/_edit_horizontal_guides_ = [74.0]
 
 [node name="Player" parent="." instance=ExtResource("3_subxb")]
-position = Vector2(212, 298)
+position = Vector2(513, 335)
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+position = Vector2(-514, -342)
+zoom = Vector2(0.29, 0.29)
+editor_draw_drag_margin = true
 
 [node name="Node2D" type="Node2D" parent="." node_paths=PackedStringArray("_node2D")]
+visible = false
 script = ExtResource("1_khlc1")
 _node2D = NodePath(".")
