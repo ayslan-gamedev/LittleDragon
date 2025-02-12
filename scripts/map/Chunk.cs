@@ -26,14 +26,24 @@ public partial class Chunk : Node
     /// <param name="chunk">The room to set as a neighbor.</param>
     public void SetNeighbor(int io, Chunk chunk)
     {
-        if(chunk != null) NeighborRooms[io] = chunk;
+        NeighborRooms[io] = chunk;
+        GD.Print($"seted {chunk}");
+    }
+
+    public void ActiveNeighbor()
+    {
+        NeighborRooms[0].GetOwner<Node2D>().Visible = true;
+
+        var distance = NeighborRooms[0]._right.GlobalPosition - _left.GlobalPosition;
+        NeighborRooms[0].GetOwner<Node2D>().GlobalPosition += distance;
+        GD.Print(distance);
     }
 
     /// <summary>
     /// Binary representation of the room's open sides.
     /// </summary>
     private int RoomInputs { get; set; }
-
+    
     /// <summary>
     /// Called when the node enters the scene tree. Initializes room connections.
     /// </summary>
@@ -50,7 +60,7 @@ public partial class Chunk : Node
         if (_up != null) RoomInputs |= 0b0100;
         if (_right != null) RoomInputs |= 0b0010;
         if (_down != null) RoomInputs |= 0b0001;
-        
+
         // connect ObBodyEntered from Area2D
         _area2D = Owner.GetNode<Area2D>("Area2D");
         _area2D.BodyEntered += OnBodyEntered;
@@ -58,7 +68,7 @@ public partial class Chunk : Node
 
     private static void OnBodyEntered(Node2D body)
     {
-        GD.Print("CURRENT");
+        //GD.Print("CURRENT");
     }
     
     /// <summary>

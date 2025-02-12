@@ -22,21 +22,14 @@ public static class ChunkManager
     /// <returns>A list of instantiated <see cref="Chunk"/> objects.</returns>
     public static List<Chunk> InstantiateGrid(Node2D root, Grid grid)
     {
-        var rooms = new Chunk[grid.Chunks.GetLength(1), grid.Chunks.GetLength(0)];
+        var rooms = new Chunk[grid.Chunks.GetLength(0), grid.Chunks.GetLength(1)];
 
         for (var x = 0; x < grid.Width; x++)
         {
             for (var y = 0; y < grid.Height; y++)
             {
                 var room = InstantiateRoom(root, grid.GetChunk(x, y));
-                if (room == null) continue;
-                rooms[x, y] = room;
-
-                // Set neighbors in all four cardinal directions
-                if (x > 0) room.SetNeighbor(0, rooms[x - 1, y]); // Left
-                if (y < rooms.GetLength(1) - 1) room.SetNeighbor(1, rooms[x, y + 1]); // Down
-                if (x < rooms.GetLength(0) - 1) room.SetNeighbor(2, rooms[x + 1, y]); // Right
-                if (y > 0) room.SetNeighbor(3, rooms[x, y - 1]); // Up
+                if (room != null) rooms[x, y] = room;
             }
         }
 
@@ -45,11 +38,11 @@ public static class ChunkManager
             for (var y = 0; y < grid.Height; y++)
             {
                 var room = rooms[x, y];
-
-                if (x > 0) room.SetNeighbor(0, rooms[x - 1, y]); // Left
-                if (y > 0) room.SetNeighbor(3, rooms[x, y - 1]); // Down
-                if (x < grid.Width - 1) room.SetNeighbor(2, rooms[x + 1, y]); // Right
-                if (y < grid.Height - 1) room.SetNeighbor(1, rooms[x, y + 1]); // Up
+                GD.Print(x + " " + y);
+                if (x > 0 && rooms[x - 1, y] != null) room.SetNeighbor(0, rooms[x - 1, y]); // Left
+                if (y < grid.Height - 1 && rooms[x, y + 1] != null) room.SetNeighbor(1, rooms[x, y + 1]); // Up
+                if (x < grid.Width - 1 && rooms[x + 1, y] != null) room.SetNeighbor(2, rooms[x + 1, y]); // Right
+                if (y > 0 && rooms[x-1, y] != null) room.SetNeighbor(3, rooms[x, y - 1]); // Down
             }
         }
 
