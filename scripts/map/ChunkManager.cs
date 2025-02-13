@@ -31,6 +31,10 @@ public static class ChunkManager
                 var room = InstantiateRoom(root, grid.GetChunk(x, y));
                 GD.Print($"{room}: {x}, {y}");
                 if (room != null) rooms[x, y] = room;
+                if (x > 0 && rooms[x - 1, y] != null) room.SetNeighbor(0, rooms[x - 1, y]); // Left
+                if (y < grid.Height - 1 && rooms[x, y + 1] != null) room.SetNeighbor(1, rooms[x, y + 1]); // Up
+                if (x < grid.Width - 1 && rooms[x + 1, y] != null) room.SetNeighbor(2, rooms[x + 1, y]); // Right
+                if (y > 0 && rooms[x-1, y] != null) room.SetNeighbor(3, rooms[x, y - 1]); // Down
             }
         }
 
