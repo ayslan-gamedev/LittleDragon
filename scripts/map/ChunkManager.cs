@@ -22,27 +22,25 @@ public static class ChunkManager
     /// <returns>A list of instantiated <see cref="Chunk"/> objects.</returns>
     public static List<Chunk> InstantiateGrid(Node2D root, Grid grid)
     {
-        var rooms = new Chunk[grid.Chunks.GetLength(0), grid.Chunks.GetLength(1)];
+        var rooms = new Chunk[grid.Width, grid.Height];
 
-        for (var x = 0; x < grid.Width; x++)
+        for (var y = 0; y < grid.Height; y++)
         {
-            for (var y = 0; y < grid.Height; y++)
+            for (var x = 0; x < grid.Width; x++)
             {
                 var room = InstantiateRoom(root, grid.GetChunk(x, y));
+                GD.Print($"{room}: {x}, {y}");
                 if (room != null) rooms[x, y] = room;
             }
         }
 
+        GD.Print("finished");
         for (var x = 0; x < grid.Width; x++)
         {
             for (var y = 0; y < grid.Height; y++)
             {
                 var room = rooms[x, y];
                 GD.Print(x + " " + y);
-                if (x > 0 && rooms[x - 1, y] != null) room.SetNeighbor(0, rooms[x - 1, y]); // Left
-                if (y < grid.Height - 1 && rooms[x, y + 1] != null) room.SetNeighbor(1, rooms[x, y + 1]); // Up
-                if (x < grid.Width - 1 && rooms[x + 1, y] != null) room.SetNeighbor(2, rooms[x + 1, y]); // Right
-                if (y > 0 && rooms[x-1, y] != null) room.SetNeighbor(3, rooms[x, y - 1]); // Down
             }
         }
 
@@ -50,10 +48,11 @@ public static class ChunkManager
         foreach (var room in rooms)
         {
             if(room == null) continue;
-            room.GetOwner<Node2D>().Visible = false;
+            //room.GetOwner<Node2D>().Visible = false;
+            GD.Print(room);
             list.Add(room);
         }
-        
+        GD.Print("ok");
         return list;
     }
 

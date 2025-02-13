@@ -1,20 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://vj1jjnnd4diu"]
+[gd_scene load_steps=2 format=3 uid="uid://vj1jjnnd4diu"]
 
 [ext_resource type="Script" path="res://scripts/Test.cs" id="1_khlc1"]
-[ext_resource type="PackedScene" uid="uid://clwif8ujxwhml" path="res://scenes/player.tscn" id="3_subxb"]
 
-[node name="Tiles" type="Node2D"]
-metadata/_edit_horizontal_guides_ = [74.0]
-
-[node name="Player" parent="." instance=ExtResource("3_subxb")]
-position = Vector2(513, 335)
-
-[node name="Camera2D" type="Camera2D" parent="Player"]
-position = Vector2(-514, -342)
-zoom = Vector2(0.29, 0.29)
-editor_draw_drag_margin = true
+[node name="test" type="Node2D"]
 
 [node name="Node2D" type="Node2D" parent="." node_paths=PackedStringArray("_node2D")]
-visible = false
 script = ExtResource("1_khlc1")
 _node2D = NodePath(".")

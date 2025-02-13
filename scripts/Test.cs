@@ -30,14 +30,14 @@ public partial class Test : Node2D
         GridFactory.Connect(grid,dots[0], dots[3]);
         //GridBuilder.Connect(grid,dots[new Random().Next(0, 3)], dots[4]);
 
-        //PrintGrid(grid);
+        PrintGrid(grid);
         
         var rooms = ChunkManager.InstantiateGrid(_node2D, grid);
         //PrintRooms(rooms);
         
-        rooms[1].GetOwner<Node2D>().Visible = true;
-        rooms[1].GetOwner<Node2D>().Position = new Vector2(150, 0);
-        rooms[1].ActiveNeighbor();
+        //rooms[1].GetOwner<Node2D>().Visible = true;
+        //rooms[1].GetOwner<Node2D>().Position = new Vector2(150, 0);
+        //rooms[1].ActiveNeighbor();
 
         foreach (var room in rooms.Where(room => room.GetOwner<Node2D>().Visible == true))
         {

@@ -61,6 +61,8 @@ public abstract class GridFactory
                 { 0b0010, 0b1000, 0b0100, 0b0001 }, // last direction
             };
             
+            // TODO Add a way to divide path
+
             // x < 0 = 1, x > 0 = 0, y > o 2, y < 0 = 3
             var index = distance.X != 0 ? distance.X < 0 ? 0 : 1  : distance.Y < 0 ? 3 : 2;
 

@@ -27,7 +27,7 @@ public partial class Chunk : Node
     public void SetNeighbor(int io, Chunk chunk)
     {
         NeighborRooms[io] = chunk;
-        GD.Print($"seted {chunk}");
+        GD.Print($"sated {chunk}");
     }
 
     public void ActiveNeighbor()
