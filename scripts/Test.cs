@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
 using LittleDragon.scripts.map;
 using LittleDragon.scripts.map.grid;
+using static Godot.GD;
 
 namespace LittleDragon.scripts;
 
@@ -12,13 +14,19 @@ public partial class Test : Node2D
     
     public override void _Ready()
     {
-        const int width = 5;
-        const int height = 4;
+        ChunkManager.Test_InstantiateRoom(_node2D);
+        TestGen();
+    }
+
+    private void TestGen()
+    {
+        const int width = 15;
+        const int height = 15;
 		
         var chunkBuilders = new RoomBuilder[]
         {
             new("A", 0, 0 ),
-            new("B", 2, 2 ),
+            new("B", 2, 10, 2 , 20),
             new("C", 2, 3 ),
             new("D", 4, 2 ),
             //new("bonus", 1, 4, 0, 3 ),
@@ -35,30 +43,28 @@ public partial class Test : Node2D
         var rooms = ChunkManager.InstantiateGrid(_node2D, grid);
         //PrintRooms(rooms);
         
-        //rooms[1].GetOwner<Node2D>().Visible = true;
-        //rooms[1].GetOwner<Node2D>().Position = new Vector2(150, 0);
-        //rooms[1].ActiveNeighbor();
+        rooms[1].GetOwner<Node2D>().Visible = true;
+        rooms[1].GetOwner<Node2D>().Position = new Vector2(400, 0);
+        rooms[1].ActiveNeighbors();
 
-        foreach (var room in rooms.Where(room => room.GetOwner<Node2D>().Visible == true))
-        {
-            GD.Print("a");
-        }
+        var chunkCount = rooms.Count(room => room.GetOwner<Node2D>().Visible);
+        Print(chunkCount);
     }
-
+    
     private static void PrintGrid(Grid grid)
     {
-        GD.Print(grid.ToString());
+        Print(grid.ToString());
     }
 
     private static void PrintRooms(List<Chunk> a)
     {
-        if (a.Count == 0) GD.Print("No rooms found!");
+        if (a.Count == 0) Print("No rooms found!");
 
-        GD.Print(a.Count);
-        GD.Print("printing: ");
+        Print(a.Count);
+        Print("printing: ");
         foreach (var room in a)
         {
-            GD.Print(room.ToString());
+            Print(room.ToString());
         }
     }
 }
