@@ -101,9 +101,11 @@ public static class ChunkManager
         }
     }
 
-    public static void UpdateChunks(List<Chunk> chunks, Chunk currentChunk)
+    public static List<Chunk> Chunks { get; set; }
+
+    public static void UpdateChunks(Chunk currentChunk)
     {
-        foreach (var chunk in chunks.Where(chunk => chunk != currentChunk))
+        foreach (var chunk in Chunks.Where(chunk => chunk != currentChunk))
         {
             chunk.GetOwner<Node2D>().Visible = false;
         }

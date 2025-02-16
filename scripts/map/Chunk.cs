@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Godot;
 
 namespace LittleDragon.scripts.map;
@@ -16,7 +17,7 @@ public partial class Chunk : Node2D
     /// Stores references to neighboring Room instances.
     /// </summary>
     private Chunk[] _neighborRooms = new Chunk[4];
-
+    
     private Area2D _area2D;
     
     /// <summary>
@@ -83,9 +84,11 @@ public partial class Chunk : Node2D
         _area2D.BodyEntered += OnBodyEntered;
     }
 
-    private static void OnBodyEntered(Node2D body)
+    private void OnBodyEntered(Node2D body)
     {
-        //GD.Print("CURRENT");
+        if (!body.IsInGroup("player")) return;
+        GD.Print("CURRENT");
+        ChunkManager.UpdateChunks(this);
     }
     
     /// <summary>
