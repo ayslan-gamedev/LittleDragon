@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Godot;
 using LittleDragon.scripts.map.grid;
 using FileAccess = Godot.FileAccess;
@@ -22,41 +21,39 @@ public static class ChunkManager
     /// <returns>A list of instantiated <see cref="Chunk"/> objects.</returns>
     public static List<Chunk> InstantiateGrid(Node2D root, Grid grid)
     {
-        var rooms = new Chunk[grid.Width, grid.Height];
+        var chunks = new Chunk[grid.Width, grid.Height];
 
         for (var y = 0; y < grid.Height; y++)
         {
             for (var x = 0; x < grid.Width; x++)
             {
                 var room = InstantiateRoom(root, grid.GetChunk(x, y));
-                GD.Print($"{room}: {x}, {y}");
-                if (room != null) rooms[x, y] = room;
-                if (x > 0 && rooms[x - 1, y] != null) room.SetNeighbor(0, rooms[x - 1, y]); // Left
-                if (y < grid.Height - 1 && rooms[x, y + 1] != null) room.SetNeighbor(1, rooms[x, y + 1]); // Up
-                if (x < grid.Width - 1 && rooms[x + 1, y] != null) room.SetNeighbor(2, rooms[x + 1, y]); // Right
-                if (y > 0 && rooms[x-1, y] != null) room.SetNeighbor(3, rooms[x, y - 1]); // Down
+                if (room != null) chunks[x, y] = room;
             }
         }
-
-        GD.Print("finished");
-        for (var x = 0; x < grid.Width; x++)
+        
+        for (var y = 0; y < grid.Height; y++) 
         {
-            for (var y = 0; y < grid.Height; y++)
+            for (var x = 0; x < grid.Width; x++) 
             {
-                var room = rooms[x, y];
-                GD.Print(x + " " + y);
+                var chunk = chunks[x, y];
+                
+                // This code is really stinky, full, bizarre, horrible and poorly made.
+                // But I'm tired and nothing I try to do to change it works, so it will stay like this.
+                try { chunk.SetNeighbor(0, chunks[x - 1, y]); } catch { /* ignored */ } // Left
+                try { chunk.SetNeighbor(1, chunks[x, y + 1]); } catch { /* ignored */ } // Up
+                try { chunk.SetNeighbor(2, chunks[x + 1, y]); } catch { /* ignored */ } // Right
+                try { chunk.SetNeighbor(3, chunks[x, y - 1]); } catch { /* ignored */ } // Down
             }
         }
 
         var list = new List<Chunk>();
-        foreach (var room in rooms)
+        foreach (var room in chunks)
         {
             if(room == null) continue;
-            //room.GetOwner<Node2D>().Visible = false;
-            GD.Print(room);
+            room.GetOwner<Node2D>().Visible = false;
             list.Add(room);
         }
-        GD.Print("ok");
         return list;
     }
 
@@ -68,66 +65,38 @@ public static class ChunkManager
     /// <returns>The instantiated <see cref="Chunk"/> if successful; otherwise, null.</returns>
     private static Chunk InstantiateRoom(Node2D root, Room room)
     {
-        // If the chunk's name is "0", return null (indicating no room should be instantiated).
-        if (room.Name == "0") return null;
+        // TODO: select a random scene
+        const int fileId = 0;
 
-        // Construct the path where the room scene files are stored.
-        var path = room.SpecialRoom
-            ? $"{RoomsPath}{room.Name}/{room.Binary}/"
-            : $"{RoomsPath}{room.Name}_{room.Binary}/";
-
-        // Attempt to open the directory containing room scenes.
-        var dir = DirAccess.Open(path);
-        if (dir == null) return null;
-
-        // Count the number of available scene files in the directory.
-        var count = 0;
-        dir.ListDirBegin();
-        var fileName = dir.GetNext();
-        while (!string.IsNullOrEmpty(fileName))
-        {
-            if (!dir.CurrentIsDir()) count++;
-            fileName = dir.GetNext();
-        }
-
-        // Select a random room file from the available options.
-        var roomName = new Random().Next(0, count);
-        var file = $"{path}{roomName}.tscn";
-
-        // Ensure the selected room file exists.
+        var file = $"{RoomsPath}{room.Name}_{room.Binary}/{fileId}.tscn";
         if (!FileAccess.FileExists(file)) return null;
-
-        // Load and instantiate the scene.
-        var scene = GD.Load<PackedScene>(file).Instantiate();
-
-        // Attach the instantiated scene to the root node.
-        root.AddChild(scene);
-
-        // Return the Room node within the instantiated scene.
-        return scene.GetNode<Chunk>("Room");
-    }
-    
-    public static void SetCurrentChunk(Chunk chunk, List<Chunk> rooms)
-    {
-        var currentRoom = new Chunk();
-
-        foreach (var mRoom in rooms)
-        {
-            if (mRoom != currentRoom)
-            {
-                mRoom.GetOwner<Node2D>().Visible = false;
-            }
-            else
-            {
-                currentRoom = mRoom;
-                currentRoom.GetOwner<Node2D>().Visible = true;
-            }
-        }
         
-        foreach (var neighbor in currentRoom.NeighborRooms)
+        var scene = GD.Load<PackedScene>(file).Instantiate();
+        root.AddChild(scene);
+        
+        return scene.GetNode<Chunk>("Chunk");
+    }
+
+    /// <summary>
+    /// Instantiate Room unitary test
+    /// </summary>
+    /// <param name="node2D">a root to instance the rooms and use to test</param>
+    public static void Test_InstantiateRoom(Node2D node2D)
+    {
+        var roomInts = new[]
         {
-            if (neighbor != null) 
-                neighbor.GetOwner<Node2D>().Visible = true;
-        }            
+            0b0011, 0b0101, 0b0110, 0b0111, 0b1001, 0b1010, 0b1011, 0b1100, 0b1101, 0b1110, 0b1111
+        };
+
+        foreach (var t in roomInts)
+        {
+            var room = new Room(Vector2I.Zero, t);
+            var instantiateRoom = InstantiateRoom(node2D, room);
+            var bin = Convert.ToString(t, 2).PadLeft(4, '0');
+            var bin2 = Convert.ToString(instantiateRoom.ToInt(), 2).PadLeft(4, '0');
+            var isCorrect = bin2 == bin; 
+            GD.Print($"{isCorrect} => {bin2} ==: {room.Name}_{room.Binary}");
+            instantiateRoom.GetOwner<Node2D>().QueueFree();
+        }
     }
 }
