@@ -41,9 +41,7 @@ public partial class Chunk : Node2D
         {
             var neighborChunk = _neighborRooms[i];
             var neighborRoot = neighborChunk.GetOwner<Node2D>();
-                
             neighborRoot.Visible = true;
-            neighborRoot.Translate(new Vector2(10000, 10000));
 
             var distance = i switch
             {

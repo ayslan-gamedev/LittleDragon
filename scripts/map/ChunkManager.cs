@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Godot;
 using LittleDragon.scripts.map.grid;
 using FileAccess = Godot.FileAccess;
@@ -98,5 +99,16 @@ public static class ChunkManager
             GD.Print($"{isCorrect} => {bin2} ==: {room.Name}_{room.Binary}");
             instantiateRoom.GetOwner<Node2D>().QueueFree();
         }
+    }
+
+    public static void UpdateChunks(List<Chunk> chunks, Chunk currentChunk)
+    {
+        foreach (var chunk in chunks.Where(chunk => chunk != currentChunk))
+        {
+            chunk.GetOwner<Node2D>().Visible = false;
+        }
+
+        currentChunk.GetOwner<Node2D>().Visible = true;
+        currentChunk.ActiveNeighbors();
     }
 }
