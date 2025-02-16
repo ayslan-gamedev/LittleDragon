@@ -42,6 +42,8 @@ public class Room
     {
         Position = position;
         Name = ios.ToString();
+        _binary = ios;
+        Binary = Convert.ToString(_binary, 2).PadLeft(4, '0');
     }
 
     /// <summary>
