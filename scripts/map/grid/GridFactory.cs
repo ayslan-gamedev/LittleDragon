@@ -47,7 +47,9 @@ public abstract class GridFactory
     /// <param name="end">The ending position of the path.</param>
     public static void Connect(Grid grid, Vector2I start, Vector2I end)
     {
+        var halfX = (end.X - start.X) / 2;
         var lastDirection = -100;
+
         while (true)
         {
             if (lastDirection != -100) grid.GetChunk(start).SetIo(lastDirection);
@@ -62,10 +64,10 @@ public abstract class GridFactory
             };
             
             // TODO Add a way to divide path
-
-            // x < 0 = 1, x > 0 = 0, y > o 2, y < 0 = 3
-            var index = distance.X != 0 ? distance.X < 0 ? 0 : 1  : distance.Y < 0 ? 3 : 2;
-
+            
+            //var index = distance.X != 0 ? distance.X < 0 ? 0 : 1  : distance.Y < 0 ? 3 : 2;
+            var index = distance.X > halfX || distance.Y == 0 ? distance.X < 0 ? 0 : 1 : distance.Y < 0 ? 3 : 2;
+            
             if (distance.X != 0 || distance.Y != 0)
             {
                 grid.GetChunk(start).SetIo(lookup[2, index]);
