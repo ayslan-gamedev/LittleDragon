@@ -38,13 +38,28 @@ public static class ChunkManager
             for (var x = 0; x < grid.Width; x++) 
             {
                 var chunk = chunks[x, y];
+
+                if(chunk is null) continue;
                 
-                // This code is really stinky, full, bizarre, horrible and poorly made.
-                // But I'm tired and nothing I try to do to change it works, so it will stay like this.
-                try { chunk.SetNeighbor(0, chunks[x - 1, y]); } catch { /* ignored */ } // Left
-                try { chunk.SetNeighbor(1, chunks[x, y + 1]); } catch { /* ignored */ } // Up
-                try { chunk.SetNeighbor(2, chunks[x + 1, y]); } catch { /* ignored */ } // Right
-                try { chunk.SetNeighbor(3, chunks[x, y - 1]); } catch { /* ignored */ } // Down
+                if (x - 1 > 0 && chunks[x - 1, y] != null)
+                {
+                    chunk.SetNeighbor(0, chunks[x - 1, y]);
+                }
+
+                if (y + 1 < grid.Height && chunks[x, y + 1] != null)
+                {
+                    chunk.SetNeighbor(1, chunks[x, y + 1]);
+                }
+
+                if (x + 1 < grid.Width && chunks[x + 1, y] != null)
+                {
+                    chunk.SetNeighbor(2, chunks[x + 1, y]);
+                }
+
+                if (y - 1 > 0 && chunks[x, y - 1] != null)
+                {
+                    chunk.SetNeighbor(3, chunks[x, y - 1]);
+                }
             }
         }
 
@@ -57,7 +72,7 @@ public static class ChunkManager
         }
         return list;
     }
-
+    
     /// <summary>
     /// Instantiates a room based on the provided chunk and attaches it to the given root node.
     /// </summary>
@@ -77,11 +92,12 @@ public static class ChunkManager
         
         return scene.GetNode<Chunk>("Chunk");
     }
-
+    
     /// <summary>
     /// Instantiate Room unitary test
     /// </summary>
     /// <param name="node2D">a root to instance the rooms and use to test</param>
+    // ReSharper disable once UnusedMember.Global
     public static void Test_InstantiateRoom(Node2D node2D)
     {
         var roomInts = new[]
