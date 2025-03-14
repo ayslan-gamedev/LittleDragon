@@ -35,30 +35,22 @@ public static class ChunkManager
         
         for (var y = 0; y < grid.Height; y++) 
         {
-            for (var x = 0; x < grid.Width; x++) 
+            for (var x = 0; x < grid.Width; x++)
             {
                 var chunk = chunks[x, y];
+                if (chunk is null) continue;
 
-                if(chunk is null) continue;
-                
-                if (x - 1 > 0 && chunks[x - 1, y] != null)
+                var neighbors = new[]
                 {
-                    chunk.SetNeighbor(0, chunks[x - 1, y]);
-                }
+                    x - 1 > 0 ? chunks[x - 1, y] : null,
+                    y + 1 < grid.Height ? chunks[x, y + 1] : null,
+                    x + 1 < grid.Width ? chunks[x + 1, y] : null,
+                    x - 1 > 0 ? chunks[x, y - 1] : null,
+                };
 
-                if (y + 1 < grid.Height && chunks[x, y + 1] != null)
+                for (var z = 0; z < neighbors.Length; z++)
                 {
-                    chunk.SetNeighbor(1, chunks[x, y + 1]);
-                }
-
-                if (x + 1 < grid.Width && chunks[x + 1, y] != null)
-                {
-                    chunk.SetNeighbor(2, chunks[x + 1, y]);
-                }
-
-                if (y - 1 > 0 && chunks[x, y - 1] != null)
-                {
-                    chunk.SetNeighbor(3, chunks[x, y - 1]);
+                    if (neighbors[z] != null) chunk.SetNeighbor(z, neighbors[z]);
                 }
             }
         }
