@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=4 uid="uid://wrr3fka3pnpb"]
 
 [ext_resource type="TileSet" uid="uid://j082uvdfgj5t" path="res://assets/TilesSets/bricks.tres" id="1_sodxs"]
-[ext_resource type="Script" path="res://scripts/map/Chunk.cs" id="2_wvlua"]
+[ext_resource type="Script" uid="uid://cpwd6bjkiqf0d" path="res://scripts/map/Chunk.cs" id="2_wvlua"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_aap1p"]
 size = Vector2(352, 224)

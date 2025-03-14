@@ -87,7 +87,6 @@ public partial class Chunk : Node2D
     private void OnBodyEntered(Node2D body)
     {
         if (!body.IsInGroup("player")) return;
-        GD.Print("CURRENT");
         ChunkManager.UpdateChunks(this);
     }
     

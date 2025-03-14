@@ -108,6 +108,7 @@ public static class ChunkManager
         foreach (var chunk in Chunks.Where(chunk => chunk != currentChunk))
         {
             chunk.GetOwner<Node2D>().Visible = false;
+            chunk.GetOwner<Node2D>().Position = new Vector2I(10000, 1000);
         }
 
         currentChunk.GetOwner<Node2D>().Visible = true;

@@ -1,12 +1,29 @@
-[gd_scene load_steps=3 format=3 uid="uid://vj1jjnnd4diu"]
+[gd_scene load_steps=6 format=3 uid="uid://vj1jjnnd4diu"]
 
-[ext_resource type="Script" uid="uid://3ivj2dqplomn" path="res://scripts/Test.cs" id="1_khlc1"]
 [ext_resource type="PackedScene" uid="uid://3ljx1y3k7tga" path="res://scenes/player.tscn" id="2_hy2cy"]
+[ext_resource type="Script" uid="uid://dsjtk2b5gcnt3" path="res://scripts/map/Test.cs" id="2_iyx0m"]
+[ext_resource type="Script" uid="uid://browexs33a6en" path="res://scripts/map/grid/RoomBuilder.cs" id="3_74lek"]
+
+[sub_resource type="Resource" id="Resource_j5jx5"]
+script = ExtResource("3_74lek")
+_min = Vector2i(1, 1)
+_max = Vector2i(1, 1)
+_roomName = "A"
+metadata/_custom_type_script = "uid://browexs33a6en"
+
+[sub_resource type="Resource" id="Resource_lpvoh"]
+script = ExtResource("3_74lek")
+_min = Vector2i(4, 4)
+_max = Vector2i(4, 4)
+_roomName = "B"
+metadata/_custom_type_script = "uid://browexs33a6en"
 
 [node name="test" type="Node2D"]
 
 [node name="Player" parent="." instance=ExtResource("2_hy2cy")]
 
-[node name="Node2D" type="Node2D" parent="." node_paths=PackedStringArray("_node2D")]
-script = ExtResource("1_khlc1")
-_node2D = NodePath(".")
+[node name="Node2D" type="Node2D" parent="." node_paths=PackedStringArray("_resources")]
+position = Vector2(0, 2)
+script = ExtResource("2_iyx0m")
+_rooms = Array[Object]([SubResource("Resource_j5jx5"), SubResource("Resource_lpvoh")])
+_resources = []

@@ -5,23 +5,46 @@ namespace LittleDragon.scripts.map.grid;
 /// <summary>
 /// Defines a blueprint for creating rooms within a specific area of the grid.
 /// </summary>
-public class RoomBuilder
+[GlobalClass]
+public partial class RoomBuilder : Resource
 {
+    [Export] private Vector2I _min, _max;
+    [Export] private string _roomName;
+
     /// <summary>
     /// The minimum boundary of the room's position.
     /// </summary>
-    public readonly Vector2I Min;
+    public Vector2I Min
+    {
+        get => _min;
+        private set => _min = value;
+    }
 
     /// <summary>
     /// The maximum boundary of the room's position.
     /// </summary>
-    public readonly Vector2I Max;
+    public Vector2I Max
+    {
+        get => _max;
+        private set => _max = value;
+    }
 
     /// <summary>
     /// The identifier or name of the room.
     /// </summary>
-    public readonly string Name;
-
+    public string Name 
+    {
+        get => _roomName;
+        private set => _roomName = value;
+    }
+    
+    public RoomBuilder()
+    {
+        Min = _min;
+        Max = _max;
+        Name = _roomName;
+    }
+    
     /// <summary>
     /// Initializes a room builder with a specified rectangular area.
     /// </summary>
@@ -49,4 +72,5 @@ public class RoomBuilder
         Max = new Vector2I(x, y);
         Name = name;
     }
+
 }
